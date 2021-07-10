@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
+    TransitionController _transitionController;
+    OptionsController _optionsController;
     private Player _player;
 
     [Header("Player Config.")]
@@ -41,8 +42,10 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _transitionController = FindObjectOfType(typeof(TransitionController)) as TransitionController;
+        _optionsController = FindObjectOfType(typeof(OptionsController)) as OptionsController;
         _player = FindObjectOfType(typeof(Player)) as Player;
-        StartCoroutine("kegSpawn");
+        StartCoroutine(kegSpawn());
     }
 
     // Update is called once per frame
@@ -73,7 +76,7 @@ public class GameController : MonoBehaviour
         temp.transform.position = new Vector3(temp.transform.position.x, posY, 0);
         temp.GetComponent<SpriteRenderer>().sortingOrder = order;
 
-        StartCoroutine("kegSpawn");
+        StartCoroutine(kegSpawn());
     }
 
     public void score(int points)
@@ -85,6 +88,7 @@ public class GameController : MonoBehaviour
 
     public void gameOver()
     {
-        SceneManager.LoadScene(2);
+        _optionsController.StartCoroutine(_optionsController.changeMusic(_optionsController.gameoverClip));
+        _transitionController.startFade(4);
     }
 }
