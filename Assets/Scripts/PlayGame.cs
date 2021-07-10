@@ -1,19 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PlayGame : MonoBehaviour
 {
-    // Update is called once per frame
+    OptionsController _optionsController;
+    TransitionController _transitionController;
+
+    private void Start()
+    {
+        _optionsController = FindObjectOfType(typeof(OptionsController)) as OptionsController;
+        _transitionController = FindObjectOfType(typeof(TransitionController)) as TransitionController;
+    }
+
     void Update()
     {
-        if (Input.GetButtonDown("Jump") || Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Jump"))
         {
-            SceneManager.LoadScene(1);
-        } else if (Input.GetButtonDown("Cancel"))
-        {
-            Application.Quit();
+            _optionsController.StartCoroutine(_optionsController.changeMusic(_optionsController.startClip));
+            _transitionController.startFade(2);
         }
     }
 }
