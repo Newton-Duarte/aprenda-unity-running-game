@@ -28,7 +28,7 @@ public class OptionsController : MonoBehaviour
     {
         if (Input.GetButtonDown("Cancel"))
         {
-            pauseGame();
+            toggleOptions();
         }
     }
 
@@ -49,8 +49,12 @@ public class OptionsController : MonoBehaviour
         musicSource.Play();
     }
 
-    void pauseGame()
+    void toggleOptions()
     {
+        if (optionsPanelOverlay.activeInHierarchy) { musicSource.Play(); }
+        else { musicSource.Pause(); }
+
+        Time.timeScale = optionsPanelOverlay.activeInHierarchy ? 1 : 0;
         optionsPanelOverlay.SetActive(!optionsPanelOverlay.activeInHierarchy);
     }
 
